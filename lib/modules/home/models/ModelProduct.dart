@@ -1,5 +1,5 @@
-class Product {
-  Product({
+class ModelProducts {
+  ModelProducts({
     this.id,
     this.title,
     this.description,
@@ -25,7 +25,7 @@ class Product {
   String? thumbnail;
   List<String>? images;
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory ModelProducts.fromJson(Map<String, dynamic> json) => ModelProducts(
         id: json["id"],
         title: json["title"],
         description: json["description"],

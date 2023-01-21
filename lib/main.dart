@@ -7,6 +7,7 @@ import 'core/BaseAuth.dart';
 import 'modules/authentication/providers/ProviderAddUserData.dart';
 import 'modules/authentication/providers/ProviderAuthentication.dart';
 import 'modules/authentication/screens/ScreenAuthentication.dart';
+import 'modules/home/providers/ProviderProducts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProviderAddData(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProviderProducts(),
         ),
       ],
       child: MaterialApp(

@@ -13,25 +13,33 @@ import '../models/enum.dart';
 import '../providers/ProviderAuthentication.dart';
 import '../providers/ProviderPassword.dart';
 
+/// ScreenAuthentication this class is used to login and sign up activity
+/// we manage both the activity from this screen by using enum
 class ScreenAuthentication extends StatefulWidget {
   @override
   _ScreenAuthenticationState createState() => _ScreenAuthenticationState();
 }
 
 class _ScreenAuthenticationState extends State<ScreenAuthentication> {
+  /// Here we define the controllers for text field
   TextEditingController controllerUserName = TextEditingController();
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
 
+  // This parameter is used to validate the form
   GlobalKey<FormState> formKey = GlobalKey();
 
+  // To show loading, error on button we need to add this controller
   WidgetButtonController controllerButton = WidgetButtonController();
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProviderAuthentication>(
         builder: (context, callBack, child) {
+      /// here we simply get the view state from that view state we manage login and sign up view
       ViewState viewState = callBack.getViewState;
+
+      /// we are showing error or success on the basis of call back response
       if (callBack.response.messageCode == 400) {
         controllerButton.reset!();
         showErrorMessage(callBack.response.responseMessage);
@@ -64,6 +72,7 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
                   margin: const EdgeInsets.only(left: 15, right: 15),
                   child: Column(
                     children: [
+                      /// if the view state is sing up then we need to show name field as well
                       if (viewState == ViewState.SignUp)
                         WidgetTextFormField(
                           controller: controllerUserName,
@@ -80,6 +89,9 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
                         modelTextField: ModelTextField(isCompulsory: true),
                         enumValidator: EnumValidator.email,
                       ),
+
+                      /// Here we wrap this textfield with the provider because we need to change
+                      /// or we need hide/show the password field on the basis of user selection
                       Consumer<ProviderPassword>(
                           builder: (context, callBackPassword, child) {
                         return WidgetTextFormField(
@@ -112,6 +124,9 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             controllerButton.loading!();
+
+                            /// if view state is sign in then we called the sign in method
+                            /// else we called register method
                             if (viewState == ViewState.SignIn) {
                               callBack.signInUser(
                                 userData: ModelAuthentication(
@@ -155,6 +170,7 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
                           callBack.response = ModelResponse(
                               responseMessage: "", messageCode: 0);
 
+                          /// from here we change the view
                           if (viewState == ViewState.SignIn) {
                             callBack.setViewState(ViewState.SignUp);
                           } else {

@@ -24,6 +24,7 @@ class ProviderAuthentication extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// this method is used to register new user I
   Future<void> registerNewUser({required ModelAuthentication userData}) async {
     await RepositoryAuthentication.registerUser(userData: userData)
         .then((value) {
@@ -34,6 +35,7 @@ class ProviderAuthentication extends ChangeNotifier {
     });
   }
 
+  /// this method is used to login the existing user
   Future<void> signInUser({
     required ModelAuthentication userData,
   }) async {
@@ -48,6 +50,7 @@ class ProviderAuthentication extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// This method is used to logout the user
   void logOut(FirebaseAuth auth) async {
     await auth.signOut();
     response = ModelResponse(messageCode: 0, responseMessage: "Logout");
@@ -55,6 +58,7 @@ class ProviderAuthentication extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// this method is used to add data in database if user is register it self
   void addDataInDataBase({
     required ModelAuthentication userData,
   }) async {

@@ -53,11 +53,12 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Flutter Provider Firebase',
         theme: ThemeData(
           primarySwatch: myGreen,
         ),
         home: Consumer<BaseAuth>(builder: (context, callBack, child) {
+          /// Here we simply check if user is login then show home screen else show authentication screen
           return callBack.authState.currentUser == null
               ? ScreenAuthentication()
               : ScreenHome();

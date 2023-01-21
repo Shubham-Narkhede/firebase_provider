@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'ScreenProductListing.dart';
 
+/// ScreenHome this class we are using to show the product listing
 class ScreenHome extends StatefulWidget {
   @override
   _ScreenHomeState createState() => _ScreenHomeState();
@@ -30,10 +31,12 @@ class _ScreenHomeState extends State<ScreenHome> {
               textStyle: textStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         ),
         body: Consumer<ProviderProducts>(builder: (context, callBack, child) {
+          /// if the list is empty then we show no product message
           if (callBack.getResponse.messageCode == 200) {
             if (callBack.getResponse.list!.isEmpty) {
               return widgetInfo(Icons.warning, "No Product Information Found!");
             } else {
+              /// if the list is not empty then we show gridview with the product information
               return RefreshIndicator(
                 onRefresh: () async {
                   Provider.of<ProviderProducts>(context, listen: false)
@@ -45,9 +48,12 @@ class _ScreenHomeState extends State<ScreenHome> {
               );
             }
           } else if (callBack.getResponse.messageCode == 400) {
+            /// If there is an error then we show error message
             return widgetInfo(
                 Icons.error, callBack.getResponse.responseMessage);
           }
+
+          /// else we are showing loader
           return Center(
             child: LoadingAnimationWidget.inkDrop(
               color: HelperColor.colorPrimary,

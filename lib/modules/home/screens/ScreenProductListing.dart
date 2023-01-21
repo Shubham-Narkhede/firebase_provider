@@ -70,6 +70,10 @@ class _ScreenProductListingState extends State<ScreenProductListing> {
                         child: widgetText(item.description!,
                             maxLine: 3, textStyle: textStyle(fontSize: 14)),
                       ),
+
+                      /// here we are sowing the amount on the basis of callback value
+                      /// if callback value is true then we are showing discounted rate else
+                      /// we show price
                       Consumer<ProviderPrice>(
                           builder: (context, callBack, child) {
                         return Row(

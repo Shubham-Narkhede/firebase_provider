@@ -22,6 +22,9 @@ String getMessageFromErrorCode(errorCode) {
     case "ERROR_INVALID_EMAIL":
     case "invalid-email":
       return "Email address is invalid.";
+    case "weak-password":
+      return "Password must be greater than 6 digits";
+
     default:
       return "Login failed. Please try again.";
   }

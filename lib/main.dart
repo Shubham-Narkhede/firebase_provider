@@ -4,7 +4,6 @@ import 'package:firebase_provider/modules/home/screens/ScreenHome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/BaseAuth.dart';
-import 'modules/authentication/providers/ProviderAddUserData.dart';
 import 'modules/authentication/providers/ProviderAuthentication.dart';
 import 'modules/authentication/screens/ScreenAuthentication.dart';
 import 'modules/home/providers/ProviderPrice.dart';
@@ -45,9 +44,6 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProviderPassword(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => ProviderAddData(),
         ),
         ChangeNotifierProvider(
           create: (context) => ProviderProducts(),

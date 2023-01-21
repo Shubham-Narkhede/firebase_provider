@@ -33,16 +33,15 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
         builder: (context, callBack, child) {
       ViewState viewState = callBack.getViewState;
       if (callBack.response.messageCode == 400) {
-        controllerButton.error!();
         controllerButton.reset!();
         showErrorMessage(callBack.response.responseMessage);
       } else if (callBack.response.messageCode == 200) {
+        controllerButton.reset!();
         if (callBack.response.responseMessage == "User Register Successfully") {
           showSuccessMessage(callBack.response.responseMessage);
+          FocusScope.of(context).unfocus();
         }
         clearController();
-        controllerButton.success!();
-        controllerButton.reset!();
       }
       return Scaffold(
         backgroundColor: HelperColor.colorBackGround,
@@ -150,6 +149,7 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
                       ),
                       InkWell(
                         onTap: () {
+                          FocusScope.of(context).unfocus();
                           formKey.currentState!.reset();
                           clearController();
                           callBack.response = ModelResponse(

@@ -7,6 +7,7 @@ import 'core/BaseAuth.dart';
 import 'modules/authentication/providers/ProviderAddUserData.dart';
 import 'modules/authentication/providers/ProviderAuthentication.dart';
 import 'modules/authentication/screens/ScreenAuthentication.dart';
+import 'modules/home/providers/ProviderPrice.dart';
 import 'modules/home/providers/ProviderProducts.dart';
 
 Future<void> main() async {
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProviderProducts(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProviderPrice(),
         ),
       ],
       child: MaterialApp(

@@ -30,6 +30,7 @@ dependencies:
 
 # Network  
   http: ^0.13.5
+  firebase_analytics: ^10.1.0
 
 dev_dependencies:
   flutter_test:

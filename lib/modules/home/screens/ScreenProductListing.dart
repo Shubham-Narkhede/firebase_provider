@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_provider/helper/HelperColor.dart';
 import 'package:firebase_provider/modules/home/models/ModelProduct.dart';
+import 'package:firebase_provider/modules/home/providers/ProviderPrice.dart';
 import 'package:firebase_provider/widget/WidgetText.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ScreenProductListing extends StatefulWidget {
   final List<ModelProducts> list;
@@ -12,6 +15,14 @@ class ScreenProductListing extends StatefulWidget {
 
 class _ScreenProductListingState extends State<ScreenProductListing> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ProviderPrice>(context, listen: false).checkDiscountedRate();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
@@ -20,8 +31,9 @@ class _ScreenProductListingState extends State<ScreenProductListing> {
       margin: const EdgeInsets.only(left: 5, right: 5),
       child: GridView.count(
         crossAxisCount: 2,
-        mainAxisSpacing: 5,
-        crossAxisSpacing: 5,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        physics: const BouncingScrollPhysics(),
         childAspectRatio: (itemWidth / itemHeight),
         controller: ScrollController(keepScrollOffset: false),
         shrinkWrap: true,
@@ -58,23 +70,50 @@ class _ScreenProductListingState extends State<ScreenProductListing> {
                         child: widgetText(item.description!,
                             maxLine: 3, textStyle: textStyle(fontSize: 14)),
                       ),
-                      Row(
-                        children: [
-                          widgetText("\$${item.price!.toString()}",
-                              textStyle: textStyle(
-                                fontSize: 14,
-                                fontStyle: FontStyle.italic,
-                              )),
-                          widgetText(
-                              "  ${item.discountPercentage!.toString()}% off",
-                              textStyle: textStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w500,
-                                textColor: Colors.greenAccent.shade700,
-                              )),
-                        ],
-                      )
+                      Consumer<ProviderPrice>(
+                          builder: (context, callBack, child) {
+                        return Row(
+                          children: [
+                            widgetText("\$${item.price!.toString()}",
+                                textStyle: textStyle(
+                                    fontSize: callBack.getShowDiscountedPrice
+                                        ? 12
+                                        : 14,
+                                    fontStyle: FontStyle.italic,
+                                    textDecoration:
+                                        callBack.getShowDiscountedPrice
+                                            ? TextDecoration.lineThrough
+                                            : null,
+                                    textColor:
+                                        callBack.getShowDiscountedPrice == true
+                                            ? HelperColor.colorText
+                                            : Colors.black)),
+                            if (callBack.getShowDiscountedPrice == true)
+                              Container(
+                                margin: const EdgeInsets.only(left: 5),
+                                child: Row(
+                                  children: [
+                                    widgetText(
+                                        "\$${(item.price! - ((item.price! * item.discountPercentage!) / 100)).toStringAsFixed(2)}",
+                                        textStyle: textStyle(
+                                          fontSize: 14,
+                                          fontStyle: FontStyle.italic,
+                                        )),
+                                    widgetText(
+                                        "  ${item.discountPercentage!.toString()}% off",
+                                        textStyle: textStyle(
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.w500,
+                                          textColor:
+                                              Colors.greenAccent.shade700,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                          ],
+                        );
+                      })
                     ],
                   ),
                 ),

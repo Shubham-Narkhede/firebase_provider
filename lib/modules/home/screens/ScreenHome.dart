@@ -30,13 +30,18 @@ class _ScreenHomeState extends State<ScreenHome> {
               textStyle: textStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         ),
         body: Consumer<ProviderProducts>(builder: (context, callBack, child) {
-          print("object");
           if (callBack.getResponse.messageCode == 200) {
             if (callBack.getResponse.list!.isEmpty) {
               return widgetInfo(Icons.warning, "No Product Information Found!");
             } else {
-              return ScreenProductListing(
-                list: callBack.getResponse.list!,
+              return RefreshIndicator(
+                onRefresh: () async {
+                  Provider.of<ProviderProducts>(context, listen: false)
+                      .getProductsList();
+                },
+                child: ScreenProductListing(
+                  list: callBack.getResponse.list!,
+                ),
               );
             }
           } else if (callBack.getResponse.messageCode == 400) {

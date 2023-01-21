@@ -17,7 +17,7 @@ class ProviderAuthentication extends ChangeNotifier {
 
   ModelResponse get getResponse => response;
 
-  ViewState get viewState => _viewState;
+  ViewState get getViewState => _viewState;
 
   setViewState(ViewState viewState) {
     _viewState = viewState;

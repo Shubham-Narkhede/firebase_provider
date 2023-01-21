@@ -31,7 +31,7 @@ class _ScreenAuthenticationState extends State<ScreenAuthentication> {
   Widget build(BuildContext context) {
     return Consumer<ProviderAuthentication>(
         builder: (context, callBack, child) {
-      ViewState viewState = callBack.viewState;
+      ViewState viewState = callBack.getViewState;
       if (callBack.response.messageCode == 400) {
         controllerButton.error!();
         controllerButton.reset!();
